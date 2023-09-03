@@ -7,6 +7,8 @@ use App\Http\Requests\Post\UpdateRequest;
 use App\Http\Resources\Post\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostController extends Controller
 {
@@ -15,9 +17,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        $posts = Post::all();
+        $posts = Post::all('*');
         return PostResource::collection($posts);
     }
 
@@ -28,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return '';
+        return "";
     }
 
     /**
@@ -37,9 +39,9 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(StoreRequest $request): JsonResource
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $post = Post::create($data);
         return PostResource::make($post);
     }
@@ -75,7 +77,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
-        $data = $request->validate();
+        $data = $request->validated();
         $post->update($data);
         return PostResource::make($post);
     }
@@ -90,7 +92,7 @@ class PostController extends Controller
     {
         $post->delete();
         return response()->json([
-            'message'=>'done',
+            'message' => 'done',
         ]);
     }
 }

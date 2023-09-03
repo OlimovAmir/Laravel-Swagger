@@ -9,4 +9,5 @@ class Post extends Model
 {
     use HasFactory;
     protected $quarded = false;
+    protected $fillable = ['title', 'likes'];
 }
